@@ -1,0 +1,67 @@
+1
+00:00:00,000 --> 00:00:03,032
+Tasks — keep the conversation with the task
+
+2
+00:00:03,032 --> 00:00:06,107
+Start with the original conversation
+
+3
+00:00:06,107 --> 00:00:08,164
+Choose which chats to analyse
+
+4
+00:00:08,164 --> 00:00:11,181
+Review suggested tasks · prepared results
+
+5
+00:00:11,181 --> 00:00:14,181
+One task list across chats
+
+6
+00:00:14,181 --> 00:00:18,238
+Open the task with its original agreement
+
+7
+00:00:18,238 --> 00:00:21,246
+Assign responsibility and a deadline
+
+8
+00:00:21,246 --> 00:00:27,267
+Read only the discussion related to this task
+
+9
+00:00:27,267 --> 00:00:31,287
+Jump to the exact message in the original chat
+
+10
+00:00:31,287 --> 00:00:34,296
+Return to the task directly from the discussion
+
+11
+00:00:34,296 --> 00:00:40,326
+Share with the assignee selected by default
+
+12
+00:00:40,326 --> 00:00:44,397
+A task card in the assignee’s chat · local demo
+
+13
+00:00:44,397 --> 00:00:47,423
+Open the same task from the shared card
+
+14
+00:00:47,423 --> 00:00:50,439
+Return to the unified task list
+
+15
+00:00:50,439 --> 00:00:53,464
+Complete the task with one tap
+
+16
+00:00:53,464 --> 00:00:56,475
+Review completed tasks
+
+17
+00:00:56,475 --> 00:01:00,553
+Tasks — keep the conversation with the task
