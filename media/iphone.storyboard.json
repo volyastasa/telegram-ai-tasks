@@ -1,0 +1,241 @@
+{
+  "view": "iPhone browser layout",
+  "video": "iphone.mp4",
+  "duration_seconds": 81,
+  "resolution": [
+    480,
+    1020
+  ],
+  "frame_rate": 30,
+  "frames": 2430,
+  "audio": false,
+  "poster": {
+    "file": "iphone.jpg",
+    "time_seconds": 2.5,
+    "note": "Representative guide phase. The video starts with clean UI."
+  },
+  "capture": "Actual standalone prototype UI screenshots and real UI actions. Guide fades are a recording treatment, composited from three captures of the same settled UI state: clean UI, native annotations without dimming, and those annotations with 25% black dimming.",
+  "guide": {
+    "starts_seconds": [
+      0,
+      8,
+      20,
+      28,
+      38,
+      52,
+      64
+    ],
+    "seconds_each": 8,
+    "overlay_opacity": 0.25,
+    "phase_ranges_end_exclusive": [
+      {
+        "frames": [
+          0,
+          36
+        ],
+        "phase": "Clean UI"
+      },
+      {
+        "frames": [
+          36,
+          46
+        ],
+        "phase": "Guide fades in"
+      },
+      {
+        "frames": [
+          46,
+          52
+        ],
+        "phase": "Guide fully visible; UI undimmed"
+      },
+      {
+        "frames": [
+          52,
+          67
+        ],
+        "phase": "Background dims to 25%"
+      },
+      {
+        "frames": [
+          67,
+          202
+        ],
+        "phase": "Hold guide"
+      },
+      {
+        "frames": [
+          202,
+          217
+        ],
+        "phase": "Background returns to undimmed"
+      },
+      {
+        "frames": [
+          217,
+          226
+        ],
+        "phase": "Guide fades out"
+      },
+      {
+        "frames": [
+          226,
+          240
+        ],
+        "phase": "Clean UI"
+      }
+    ]
+  },
+  "action_source": "alternatives/iphone-guided-50.mp4",
+  "action_ranges_source_to_video_seconds": [
+    [
+      [
+        11,
+        15
+      ],
+      [
+        16,
+        20
+      ]
+    ],
+    [
+      [
+        26,
+        28
+      ],
+      [
+        36,
+        38
+      ]
+    ],
+    [
+      [
+        33,
+        39
+      ],
+      [
+        46,
+        52
+      ]
+    ],
+    [
+      [
+        44,
+        48
+      ],
+      [
+        60,
+        64
+      ]
+    ],
+    [
+      [
+        54,
+        63
+      ],
+      [
+        72,
+        81
+      ]
+    ]
+  ],
+  "chapters": [
+    {
+      "time": 0,
+      "duration": 8,
+      "label": "New Tasks section, alongside your chats"
+    },
+    {
+      "time": 8,
+      "duration": 8,
+      "label": "Choose chats to analyse, prepared demo results"
+    },
+    {
+      "time": 16,
+      "duration": 1,
+      "label": "Open chat actions"
+    },
+    {
+      "time": 17,
+      "duration": 3,
+      "label": "Prepared analysis creates a new task"
+    },
+    {
+      "time": 20,
+      "duration": 8,
+      "label": "One task list across selected chats"
+    },
+    {
+      "time": 28,
+      "duration": 8,
+      "label": "Relevant discussion and exact source messages"
+    },
+    {
+      "time": 36,
+      "duration": 2,
+      "label": "Jump to the exact agreement in the chat"
+    },
+    {
+      "time": 38,
+      "duration": 8,
+      "label": "Create a task directly from a message"
+    },
+    {
+      "time": 46,
+      "duration": 1,
+      "label": "Open the message actions menu"
+    },
+    {
+      "time": 47,
+      "duration": 3,
+      "label": "Assign a clear title, assignee and deadline"
+    },
+    {
+      "time": 50,
+      "duration": 2,
+      "label": "The task is created from its source message"
+    },
+    {
+      "time": 52,
+      "duration": 8,
+      "label": "Return to the task from the source badge"
+    },
+    {
+      "time": 60,
+      "duration": 2,
+      "label": "Open the task directly from its source badge"
+    },
+    {
+      "time": 62,
+      "duration": 2,
+      "label": "Set the assignee before sharing"
+    },
+    {
+      "time": 64,
+      "duration": 8,
+      "label": "Share with the assignee selected by default"
+    },
+    {
+      "time": 72,
+      "duration": 3,
+      "label": "Review the recipient and task card"
+    },
+    {
+      "time": 75,
+      "duration": 1.5,
+      "label": "Add a message for the assignee"
+    },
+    {
+      "time": 76.5,
+      "duration": 4.5,
+      "label": "Shared task card in the assignee chat — local demo"
+    }
+  ],
+  "limits": [
+    "Synthetic conversations",
+    "Prepared task analysis results",
+    "Sharing simulated locally",
+    "Browser prototype with in-memory task state; no Telegram account connection"
+  ],
+  "recording_setup": "English guide copy and tour order are adapted for the recording. Viewport, scroll and transient layout are held stable between captures. The application source is unchanged by the recording treatment."
+}

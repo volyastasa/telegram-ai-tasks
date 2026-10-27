@@ -1,0 +1,71 @@
+1
+00:00:00,000 --> 00:00:08,000
+New Tasks section, alongside your chats
+
+2
+00:00:08,000 --> 00:00:16,000
+Choose chats to analyse, prepared demo results
+
+3
+00:00:16,000 --> 00:00:17,000
+Open chat actions
+
+4
+00:00:17,000 --> 00:00:20,000
+Prepared analysis creates a new task
+
+5
+00:00:20,000 --> 00:00:28,000
+One task list across selected chats
+
+6
+00:00:28,000 --> 00:00:36,000
+Relevant discussion and exact source messages
+
+7
+00:00:36,000 --> 00:00:38,000
+Jump to the exact agreement in the chat
+
+8
+00:00:38,000 --> 00:00:46,000
+Create a task directly from a message
+
+9
+00:00:46,000 --> 00:00:47,000
+Open the message actions menu
+
+10
+00:00:47,000 --> 00:00:50,000
+Assign a clear title, assignee and deadline
+
+11
+00:00:50,000 --> 00:00:52,000
+The task is created from its source message
+
+12
+00:00:52,000 --> 00:01:00,000
+Return to the task from the source badge
+
+13
+00:01:00,000 --> 00:01:02,000
+Open the task directly from its source badge
+
+14
+00:01:02,000 --> 00:01:04,000
+Set the assignee before sharing
+
+15
+00:01:04,000 --> 00:01:12,000
+Share with the assignee selected by default
+
+16
+00:01:12,000 --> 00:01:15,000
+Review the recipient and task card
+
+17
+00:01:15,000 --> 00:01:16,500
+Add a message for the assignee
+
+18
+00:01:16,500 --> 00:01:21,000
+Shared task card in the assignee chat — local demo
