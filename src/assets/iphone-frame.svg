@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="414" height="868" viewBox="0 0 414 868" fill="none">
+  <defs>
+    <linearGradient id="titanium" x1="2" y1="0" x2="414" y2="868" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#68717c"/>
+      <stop offset=".13" stop-color="#242b33"/>
+      <stop offset=".46" stop-color="#464d55"/>
+      <stop offset=".77" stop-color="#20262c"/>
+      <stop offset="1" stop-color="#59616a"/>
+    </linearGradient>
+    <linearGradient id="button" x1="0" y1="0" x2="4" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#545d66"/>
+      <stop offset="1" stop-color="#20272e"/>
+    </linearGradient>
+    <radialGradient id="lens">
+      <stop stop-color="#223c60"/>
+      <stop offset=".5" stop-color="#101a2a"/>
+      <stop offset="1" stop-color="#080b10"/>
+    </radialGradient>
+  </defs>
+  <rect x="0" y="149" width="4" height="33" rx="2" fill="url(#button)"/>
+  <rect x="0" y="208" width="4" height="64" rx="2" fill="url(#button)"/>
+  <rect x="0" y="289" width="4" height="64" rx="2" fill="url(#button)"/>
+  <rect x="410" y="230" width="4" height="98" rx="2" fill="#3d454f"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M63 0H351C384.137 0 411 26.8629 411 60V808C411 841.137 384.137 868 351 868H63C29.8629 868 3 841.137 3 808V60C3 26.8629 29.8629 0 63 0ZM60 12C33.4903 12 12 33.4903 12 60V808C12 834.51 33.4903 856 60 856H354C380.51 856 402 834.51 402 808V60C402 33.4903 380.51 12 354 12H60Z" fill="url(#titanium)"/>
+  <path d="M63 2H351C383.033 2 409 27.9675 409 60V808C409 840.033 383.033 866 351 866H63C30.9675 866 5 840.033 5 808V60C5 27.9675 30.9675 2 63 2Z" stroke="#8a929c" stroke-opacity=".38"/>
+  <rect x="9.5" y="9.5" width="395" height="849" rx="50.5" stroke="#020405" stroke-width="5"/>
+  <rect x="12" y="12" width="390" height="844" rx="48" stroke="#06090c" stroke-width="1"/>
+  <rect x="145" y="22" width="124" height="34" rx="17" fill="#020405"/>
+  <rect x="176" y="28" width="42" height="3" rx="1.5" fill="#0b1016"/>
+  <circle cx="249" cy="39" r="6.5" fill="#090c11"/>
+  <circle cx="249" cy="39" r="4.5" fill="url(#lens)"/>
+  <circle cx="250.2" cy="37.7" r="1.2" fill="#31517b" fill-opacity=".5"/>
+  <rect x="140.5" y="840" width="133" height="5" rx="2.5" fill="#f1f3f7"/>
+  <path d="M5 107H12M402 107H409M5 761H12M402 761H409" stroke="#939aa4" stroke-opacity=".27" stroke-width="2"/>
+</svg>
