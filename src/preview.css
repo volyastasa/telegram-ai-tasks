@@ -1,0 +1,481 @@
+/* The same interactive demo, presented at a fixed device size. */
+:root {
+  --preview-background:
+    radial-gradient(ellipse at 5% 5%,#244f78aa 0,transparent 65%),
+    radial-gradient(ellipse at 95% 100%,#14576288 0,transparent 65%),
+    linear-gradient(135deg,#101f33 0%,#0d1d2b 48%,#0b222b 100%);
+}
+html {
+  min-height:100%;
+  background-color:#101f33;
+  background-image:var(--preview-background);
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-attachment:fixed;
+  overscroll-behavior-y:none;
+}
+html.mobile-device {
+  background-color:#17314a;
+  background-image:none;
+}
+body.preview-desktop,
+body.preview-phone {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  height:100vh;
+  height:100svh;
+  height:100dvh;
+  min-height:0;
+  padding:max(18px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));
+  background:transparent;
+  font-size:17px;
+  overflow:hidden;
+  overscroll-behavior-y:none;
+  touch-action:pan-x pan-y;
+}
+
+.preview-toolbar {
+  position:relative;
+  z-index:90;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  flex-shrink:0;
+  gap:18px;
+  width:100%;
+  max-width:1140px;
+  min-height:46px;
+}
+.preview-brand {
+  display:inline-flex;
+  align-items:center;
+  justify-self:start;
+  gap:9px;
+  color:#ecf4fd;
+  text-decoration:none;
+  font-size:19px;
+  font-weight:650;
+  letter-spacing:-.5px;
+}
+.preview-brand svg { width:26px; height:26px; color:#64c1ff; }
+.preview-brand-icon { display:block; width:30px; height:30px; }
+.preview-toolbar-actions { display:flex; align-items:center; justify-self:end; gap:10px; min-width:0; }
+.preview-language-switch { display:flex; align-items:center; flex-shrink:0; gap:2px; padding:3px; border:1px solid #2b3a49; border-radius:12px; background:#13202ce6; }
+.preview-language-switch button { display:grid; place-items:center; min-width:30px; min-height:32px; padding:5px; border-radius:8px; font-size:12px; font-weight:550; color:#93a7bc; }
+.preview-language-switch button:hover { color:#eaf6ff; background:#ffffff08; }
+.preview-language-switch button[aria-pressed=true] { color:#eaf6ff; background:#2c5c87; }
+.preview-device-switch {
+  display:flex;
+  align-items:center;
+  gap:3px;
+  padding:4px;
+  border:1px solid #2b3a49;
+  border-radius:14px;
+  background:#13202ce6;
+  box-shadow:0 5px 20px #0002;
+}
+.preview-device-switch button {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:34px;
+  min-width:103px;
+  padding:7px 14px;
+  border-radius:10px;
+  color:#93a7bc;
+  font-size:13px;
+  font-weight:550;
+  line-height:20px;
+}
+.preview-device-switch button svg { width:17px; height:17px; }
+.preview-device-switch button:hover { color:#e5f0fb; background:#ffffff06; }
+.preview-device-switch button[aria-pressed=true] {
+  color:#eaf6ff;
+  background:#2c5c87;
+  box-shadow:inset 0 1px 0 #9ddaff20,0 2px 7px #0003;
+}
+#start-tour {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  justify-self:end;
+  gap:8px;
+  min-height:39px;
+  padding:8px 13px;
+  color:#a9c9e5;
+  border:1px solid #2d4255;
+  border-radius:12px;
+  background:#14202be6;
+  font-size:13px;
+  font-weight:550;
+  white-space:nowrap;
+}
+#start-tour svg { width:18px; height:18px; color:#6ac5ff; }
+#start-tour:hover { border-color:#567c9f; background:#1b2c3b; color:#e7f4ff; }
+#start-tour[aria-expanded=true] { color:#eaf6ff; border-color:#3b83b8; }
+.preview-stage {
+  display:grid;
+  place-items:center;
+  flex:1;
+  min-width:0;
+  min-height:0;
+  width:100%;
+  position:relative;
+}
+.device-slot {
+  --device-width:1140px;
+  --device-height:810px;
+  --device-scale:1;
+  width:calc(var(--device-width) * var(--device-scale));
+  height:calc(var(--device-height) * var(--device-scale));
+  position:relative;
+  flex-shrink:0;
+}
+.device-frame {
+  position:absolute;
+  top:0;
+  left:0;
+  width:var(--device-width);
+  height:var(--device-height);
+  transform:scale(var(--device-scale));
+  transform-origin:0 0;
+}
+.device-screen { position:absolute; inset:0; min-width:0; min-height:0; }
+.iphone-frame,.phone-status,.phone-home-indicator { display:none; }
+body.preview-desktop .telegram-window {
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  grid-template-columns:34.4% minmax(0,1fr);
+  padding:9px;
+  border:1px solid #3b434b;
+  border-radius:36px;
+  box-shadow:0 24px 80px #0006;
+}
+
+/* Device choice, rather than the browser width, determines the app layout. */
+body.preview-desktop .sidebar,
+body.preview-desktop .telegram-window.chat-open .sidebar {
+  display:flex;
+  border:1px solid #2a3640;
+  border-radius:27px;
+}
+body.preview-desktop .sidebar-titlebar { justify-content:normal; height:59px; padding:0 17px; gap:12px; }
+body.preview-desktop .traffic-lights { display:flex; gap:10px; margin-right:auto; }
+body.preview-desktop .traffic-lights i { width:16px; height:16px; }
+body.preview-desktop .chats-title { margin-left:auto; font-size:17px; }
+body.preview-desktop .premium-star { font-size:22px; }
+body.preview-desktop .title-actions { margin-left:auto; gap:10px; }
+body.preview-desktop .title-actions .icon-button { width:32px; }
+body.preview-desktop .stories { gap:14px; padding-left:17px; }
+body.preview-desktop .folders { gap:22px; padding:0 12px; }
+body.preview-desktop .folders button { font-size:16px; gap:6px; }
+body.preview-desktop .chat-row { min-height:89px; gap:13px; }
+body.preview-desktop .chat-row .avatar { width:62px; height:62px; }
+body.preview-desktop .chat-name { font-size:17px; }
+body.preview-desktop .chat-preview { font-size:16px; line-height:21px; }
+body.preview-desktop .chat-time { font-size:14px; }
+body.preview-desktop .chat-menu-trigger { width:29px; height:25px; opacity:0; }
+body.preview-desktop .chat-item:hover .chat-menu-trigger,
+body.preview-desktop .chat-item:focus-within .chat-menu-trigger,
+body.preview-desktop .chat-menu-trigger[aria-expanded=true] { opacity:1; }
+body.preview-desktop .conversation,
+body.preview-desktop .telegram-window.chat-open .conversation { display:flex; padding:0 5px 0 16px; }
+body.preview-desktop .conversation-header { left:16px; right:5px; gap:12px; background:transparent; }
+body.preview-desktop .profile-button { background:#161d25f2; border:1px solid var(--line); }
+body.preview-desktop .header-text strong { font-size:16px; }
+body.preview-desktop .header-text>span { font-size:13px; }
+body.preview-desktop .conversation-actions { gap:12px; padding:0 13px; }
+body.preview-desktop .conversation-actions .icon-button { width:32px; }
+body.preview-desktop .conversation-actions [data-action=call] { display:inline-flex; }
+body.preview-desktop .conversation-actions svg { width:29px; height:29px; }
+body.preview-desktop .mobile-back { display:none; }
+body.preview-desktop .messages { padding-top:72px; }
+body.preview-desktop .message { font-size:17px; }
+body.preview-desktop .message.media { width:75%; }
+body.preview-desktop .date { font-size:16px; }
+body.preview-desktop .message-menu-trigger { opacity:0; }
+body.preview-desktop .message:hover .message-menu-trigger,
+body.preview-desktop .message:focus-within .message-menu-trigger,
+body.preview-desktop .message-menu-trigger[aria-expanded=true] { opacity:1; }
+body.preview-desktop .composer { gap:12px; }
+body.preview-desktop .round-button { width:51px; height:51px; }
+body.preview-desktop .composer-input { min-height:51px; padding-top:8px; padding-bottom:8px; }
+body.preview-desktop .composer textarea { font-size:17px; }
+body.preview-desktop .reply-bar { margin-left:65px; margin-right:65px; }
+body.preview-desktop .task-filters { gap:5px; padding:12px 12px 9px; }
+body.preview-desktop .task-filters button { font-size:12px; padding:6px 10px; }
+body.preview-desktop .task-row { padding:14px 12px 13px; }
+body.preview-desktop .task-row-title { font-size:15px; line-height:21px; }
+body.preview-desktop .task-row-source { font-size:12px; }
+body.preview-desktop .task-row-meta { font-size:11px; }
+body.preview-desktop .task-panel,
+body.preview-desktop .telegram-window.chat-open .task-panel { display:flex; padding-left:16px; }
+body.preview-desktop .task-panel-header { min-height:61px; padding:8px 14px 8px 8px; gap:12px; }
+body.preview-desktop .task-panel-caption { display:block; font-size:13px; }
+body.preview-desktop .task-source-link { font-size:13px; padding:7px 9px; }
+body.preview-desktop .task-detail-scroll { padding:26px 24px 36px; }
+body.preview-desktop .task-title { font-size:25px; }
+body.preview-desktop .task-fields { grid-template-columns:1fr 1.15fr 1fr; }
+body.preview-desktop .task-fields label:last-child { grid-column:auto; }
+body.preview-desktop .task-thread .message { font-size:14px; line-height:20px; }
+body.preview-desktop .task-thread-header>span { width:auto; margin-left:auto; }
+body.preview-desktop .message-task-link { font-size:14px; }
+
+body.preview-phone .device-frame { filter:drop-shadow(0 28px 36px #0008); }
+body.preview-phone .device-screen {
+  inset:12px;
+  overflow:hidden;
+  border-radius:48px;
+  background:var(--sidebar);
+}
+body.preview-phone .device-screen:has(.chat-open) { background:var(--bg); }
+body.preview-phone .iphone-frame {
+  display:block;
+  position:absolute;
+  inset:0;
+  z-index:6;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  user-select:none;
+}
+body.preview-phone .phone-status {
+  position:absolute;
+  z-index:7;
+  top:28px;
+  left:36px;
+  right:33px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:21px;
+  color:#f6f8fc;
+  font-size:15px;
+  font-weight:650;
+  letter-spacing:.2px;
+  pointer-events:none;
+  user-select:none;
+}
+.phone-status-icons { display:flex; align-items:center; gap:6px; }
+.phone-status-icons svg { width:56px; height:16px; stroke-width:1.6; }
+body.preview-phone .phone-home-indicator {
+  display:block;
+  position:absolute;
+  z-index:7;
+  left:50%;
+  bottom:23px;
+  width:133px;
+  height:5px;
+  border-radius:5px;
+  transform:translateX(-50%);
+  background:#f1f3f7;
+  pointer-events:none;
+}
+body.preview-phone .telegram-window {
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  display:grid;
+  grid-template-columns:1fr;
+  padding:46px 0 22px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+body.preview-phone .sidebar { display:flex; border:0; border-radius:0; }
+body.preview-phone .telegram-window.chat-open .sidebar { display:none; }
+body.preview-phone .sidebar-titlebar { position:relative; height:49px; padding:0 16px; justify-content:center; }
+body.preview-phone .traffic-lights { display:none; }
+body.preview-phone .chats-title { margin:0; font-size:18px; gap:7px; }
+body.preview-phone .premium-star { font-size:20px; }
+body.preview-phone .title-actions { position:absolute; right:13px; top:7px; margin:0; gap:5px; }
+body.preview-phone .title-actions .icon-button { width:29px; height:34px; }
+body.preview-phone .title-actions [data-action=proxy] { display:none; }
+body.preview-phone .stories { height:93px; gap:16px; padding:3px 17px 9px; }
+body.preview-phone .story { width:55px; min-width:55px; gap:7px; }
+body.preview-phone .story .avatar { width:50px; height:50px; font-size:22px; }
+body.preview-phone .story-name { width:65px; font-size:11px; }
+body.preview-phone .search-wrap { height:36px; margin:0 12px 7px; }
+body.preview-phone .search-wrap input { font-size:15px; }
+body.preview-phone .folders { height:43px; gap:25px; padding:0 16px; }
+body.preview-phone .folders button { font-size:15px; gap:5px; }
+body.preview-phone .chat-row { min-height:82px; padding:10px 9px; gap:11px; border-radius:15px; }
+body.preview-phone .chat-row .avatar { width:55px; height:55px; font-size:24px; }
+body.preview-phone .chat-row:after { left:75px; }
+body.preview-phone .chat-line { margin-bottom:3px; }
+body.preview-phone .chat-name { font-size:16px; }
+body.preview-phone .chat-time { font-size:11px; }
+body.preview-phone .chat-preview { font-size:14px; line-height:19px; }
+body.preview-phone .chat-item .chat-preview { padding-right:21px; }
+body.preview-phone .chat-menu-trigger { width:29px; height:25px; bottom:8px; right:10px; opacity:1; }
+body.preview-phone .chat-item .chat-pin,
+body.preview-phone .chat-item .unread-badge { right:43px; }
+body.preview-phone .bottom-navigation { height:54px; }
+body.preview-phone .bottom-navigation svg { width:29px; height:29px; }
+body.preview-phone .conversation { display:none; padding:0 10px; }
+body.preview-phone .telegram-window.chat-open .conversation { display:flex; }
+body.preview-phone .conversation-header { left:8px; right:8px; top:0; height:53px; gap:5px; background:var(--bg); }
+body.preview-phone .mobile-back { display:flex; align-self:center; color:var(--blue); width:27px; }
+body.preview-phone .profile-button { border:0; background:none; gap:8px; padding:0; }
+body.preview-phone .profile-button .avatar { width:35px; height:35px; font-size:16px; }
+body.preview-phone .header-text strong { font-size:14px; }
+body.preview-phone .header-text>span { font-size:10px; }
+body.preview-phone .conversation-actions { gap:1px; padding:0 5px; border:0; background:none; }
+body.preview-phone .conversation-actions .icon-button { width:26px; }
+body.preview-phone .conversation-actions svg { width:23px; height:23px; }
+body.preview-phone .conversation-actions [data-action=call] { display:none; }
+body.preview-phone .messages { padding:64px 4px 5px; gap:8px; }
+body.preview-phone .message { max-width:94%; font-size:15px; line-height:20px; padding:9px 11px; border-radius:17px 17px 17px 4px; }
+body.preview-phone .message.outgoing { border-radius:17px 17px 4px 17px; }
+body.preview-phone .messages .message { padding-right:30px; }
+body.preview-phone .message.media { width:88%; }
+body.preview-phone .message-meta { font-size:10px; }
+body.preview-phone .quote strong { font-size:12px; }
+body.preview-phone .quote p { font-size:13px; line-height:18px; }
+body.preview-phone .message-menu-trigger { opacity:1; width:22px; height:22px; }
+body.preview-phone .date { font-size:12px; line-height:18px; padding:2px 8px; }
+body.preview-phone .composer { gap:6px; padding:7px 0 4px; }
+body.preview-phone .round-button { width:39px; height:39px; }
+body.preview-phone .round-button svg { width:25px; height:25px; }
+body.preview-phone .composer-input { min-height:39px; padding:3px 4px 3px 10px; }
+body.preview-phone .composer textarea { font-size:14px; height:31px; }
+body.preview-phone .emoji-button { width:26px; height:31px; }
+body.preview-phone .emoji-button svg { width:25px; height:25px; }
+body.preview-phone .reply-bar { margin-left:44px; margin-right:43px; font-size:12px; }
+body.preview-phone .message-search { left:7px; right:7px; top:56px; }
+body.preview-phone .message-task-link { font-size:12px; line-height:17px; gap:7px; padding:8px; margin-top:9px; }
+body.preview-phone .message-task-link small { font-size:10px; }
+body.preview-phone .task-filters { gap:5px; padding:12px 12px 10px; }
+body.preview-phone .task-filters button { padding:7px 10px; font-size:12px; }
+body.preview-phone .task-row { padding:15px 13px; }
+body.preview-phone .task-row-title { font-size:16px; line-height:22px; }
+body.preview-phone .task-row-source { font-size:13px; }
+body.preview-phone .task-row-meta { font-size:12px; }
+body.preview-phone .task-panel { display:none; padding-left:0; }
+body.preview-phone .telegram-window.chat-open .task-panel { display:flex; }
+body.preview-phone .task-panel-header { padding:7px 10px; min-height:53px; gap:5px; }
+body.preview-phone .task-panel-caption { display:block; font-size:11px; }
+body.preview-phone .task-source-link { font-size:11px; padding:6px; gap:3px; }
+body.preview-phone .task-detail-scroll { padding:21px 19px 28px; }
+body.preview-phone .task-title { font-size:24px; }
+body.preview-phone .task-fields { grid-template-columns:1fr 1fr; gap:12px; }
+body.preview-phone .task-fields label:last-child { grid-column:1/-1; }
+body.preview-phone .task-thread .message { font-size:14px; line-height:20px; }
+body.preview-phone .task-thread-header>span { width:100%; margin-left:0; }
+body.preview-phone #detail-dialog {
+  position:fixed;
+  left:calc(var(--phone-screen-left, 12px) + 12px);
+  top:calc(var(--phone-screen-top, 12px) + 50px);
+  right:auto;
+  bottom:auto;
+  width:calc(var(--phone-screen-width, 390px) - 24px);
+  max-width:calc(var(--phone-screen-width, 390px) - 24px);
+  max-height:calc(var(--phone-screen-height, 844px) - 90px);
+  margin:0;
+  overflow-y:auto;
+  border-radius:18px;
+  font-size:14px;
+}
+
+/* Guided feature tour is drawn above the preview without changing its layout. */
+.tour-overlay { position:fixed; inset:0; z-index:80; isolation:isolate; background:rgb(0 0 0 / 50%); }
+.tour-shade { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; }
+.tour-spotlight {
+  position:fixed;
+  border:2px solid #72caff;
+  border-radius:13px;
+  box-shadow:0 0 0 5px #38aaff1c,0 0 28px #38aaff35;
+  pointer-events:none;
+}
+.tour-arrow { position:fixed; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; color:#7fcfff; }
+.tour-arrow[hidden] { display:none; }
+.tour-arrow path { fill:none; stroke:#7fcfff; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+.tour-arrow marker path { fill:#7fcfff; stroke:none; }
+.tour-card {
+  position:fixed;
+  z-index:2;
+  width:330px;
+  max-width:calc(100vw - 32px);
+  max-height:calc(100dvh - 104px);
+  overflow:auto;
+  padding:21px;
+  color:#eef6ff;
+  background:linear-gradient(145deg,#213246,#182737);
+  border:1px solid #4d7699;
+  border-radius:19px;
+  box-shadow:0 20px 65px #0009,inset 0 1px 0 #a0d7ff0f;
+}
+.tour-step-meta { display:flex; align-items:center; gap:9px; min-height:23px; padding-right:22px; }
+.tour-eyebrow { color:#79c9ff; font-size:10px; line-height:16px; font-weight:650; letter-spacing:1px; }
+.tour-step-meta>span:last-child:not(.tour-eyebrow) { color:#93aac1; font-size:11px; }
+.tour-title,
+.tour-card h2 { margin:10px 0 10px; font-size:21px; font-weight:650; line-height:1.22; letter-spacing:-.4px; }
+.tour-description,
+.tour-card p { margin:0; color:#afc1d2; font-size:13px; line-height:1.6; }
+.tour-card strong { color:#e2f1ff; font-weight:550; }
+#tour-close { position:absolute; top:13px; right:13px; width:27px; height:27px; display:grid; place-items:center; border-radius:8px; color:#9db2c7; font-size:24px; line-height:1; }
+#tour-close:hover { color:#fff; background:#ffffff0d; }
+#tour-close svg { width:17px; height:17px; }
+.tour-progress { display:flex; align-items:center; gap:5px; margin-top:21px; }
+.tour-progress span,
+.tour-progress button { width:6px; height:6px; border-radius:50%; background:#52667c; padding:0; }
+.tour-progress [aria-current=step],
+.tour-progress .active { width:19px; border-radius:4px; background:#5abaff; }
+.tour-actions { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-top:18px; }
+.tour-actions button { min-height:36px; padding:7px 13px; border:1px solid #425b73; border-radius:9px; color:#b9cce0; font-size:12px; font-weight:550; }
+.tour-actions button:hover { background:#ffffff08; }
+.tour-actions #tour-next { display:flex; align-items:center; justify-content:center; gap:7px; color:#fff; background:#278fd8; border-color:#48a9ed; }
+.tour-actions #tour-next:hover { background:#329de7; }
+.tour-actions #tour-next.tour-replay { color:#b9cce0; background:transparent; border-color:#425b73; }
+.tour-actions #tour-next.tour-replay:hover { color:#fff; background:transparent; border-color:#74bcea; }
+.tour-actions svg { width:16px; height:16px; }
+
+/* Electron remains a native window; the presentation shell is for the site. */
+body.desktop .preview-toolbar,
+body.desktop .iphone-frame,
+body.desktop .phone-status,
+body.desktop .phone-home-indicator { display:none; }
+body.desktop .preview-stage,
+body.desktop .device-slot,
+body.desktop .device-frame,
+body.desktop .device-screen { position:static; display:block; width:100%; height:100%; transform:none; overflow:hidden; border-radius:0; }
+
+@media(max-width:640px) {
+  body.preview-desktop,body.preview-phone { gap:12px; padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); }
+  .preview-toolbar { display:flex; justify-content:space-between; gap:10px; min-height:43px; }
+  .preview-brand { display:none; }
+  .preview-device-switch { border-radius:12px; padding:3px; }
+  .preview-device-switch button { min-width:70px; padding:6px 7px; min-height:32px; font-size:12px; gap:5px; }
+  .preview-toolbar-actions { gap:6px; }
+  .preview-language-switch { padding:3px; border-radius:11px; }
+  .preview-language-switch button { min-width:27px; padding:4px; font-size:11px; }
+  #start-tour { min-height:40px; padding:8px 10px; gap:6px; font-size:12px; }
+  #start-tour svg { width:16px; height:16px; }
+  .tour-card { width:310px; padding:18px; border-radius:16px; }
+  .tour-title,.tour-card h2 { font-size:19px; }
+  .tour-description,.tour-card p { font-size:12px; line-height:1.5; }
+  .tour-progress { margin-top:16px; }
+  .tour-actions { margin-top:15px; }
+}
+@media(max-width:360px) {
+  .preview-toolbar { gap:8px; }
+  .preview-device-switch button { min-width:0; padding:6px 3px; font-size:11px; gap:4px; }
+  .preview-device-switch button svg { width:14px; height:14px; }
+  #start-tour { padding:8px; gap:5px; font-size:11px; }
+  #start-tour svg { display:none; }
+  .preview-language-switch button { min-width:25px; }
+}
+/* Match iOS's full viewport when launched from the home screen. */
+@media(display-mode:standalone) {
+  body.preview-desktop,body.preview-phone { height:100vh; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .preview-device-switch button,.tour-card,.tour-spotlight { transition:none; }
+}

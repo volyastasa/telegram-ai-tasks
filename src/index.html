@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#17314a">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Tasks - от слов к делу. Интерактивный прототип задач из переписки. Все данные демонстрационные.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Tasks - от слов к делу</title>
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/svg+xml" href="assets/tasks-icon.svg">
+  <link rel="stylesheet" href="prototype.css">
+  <link rel="stylesheet" href="preview.css">
+  <link rel="stylesheet" href="task-share.css">
+  <script src="i18n.js" defer></script>
+  <script src="demo-data.js" defer></script>
+  <script src="demo-i18n.js" defer></script>
+  <script src="interface-i18n.js" defer></script>
+  <script src="prototype.js" defer></script>
+  <script src="preview.js" defer></script>
+</head>
+<body>
+  <header class="preview-toolbar" aria-label="Просмотр прототипа">
+    <a class="preview-brand" href="./" aria-label="Tasks — начало"><img class="preview-brand-icon" src="assets/tasks-icon.svg" alt="" aria-hidden="true"><span>Tasks</span></a>
+    <div class="preview-device-switch" role="group" aria-label="Устройство"><button type="button" id="preview-phone" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4m-3 14h2"/></svg>Phone</button><button type="button" id="preview-desktop" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 22h8m-4-5v5"/></svg>Desktop</button></div>
+    <div class="preview-toolbar-actions"><button type="button" id="start-tour" class="start-tour"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z"/></svg><span>Что нового</span></button><div class="preview-language-switch" role="group" aria-label="Язык интерфейса"><button type="button" id="language-en" data-language="en" lang="en" aria-pressed="true">EN</button><button type="button" id="language-ru" data-language="ru" lang="ru" aria-pressed="false">RU</button></div></div>
+  </header>
+  <div class="preview-stage" id="preview-stage"><div class="device-slot" id="device-slot"><div class="device-frame" id="device-frame">
+  <img class="iphone-frame" src="assets/iphone-frame.svg" alt="" aria-hidden="true" draggable="false">
+  <div class="phone-status" aria-hidden="true"><time id="phone-clock"></time><span class="phone-status-icons"><svg viewBox="0 0 56 16"><path d="M2 12v2m4-5v5m4-8v8m4-11v11" stroke="currentColor" stroke-width="2.5"/><path d="M21 6q6-6 12 0m-10 3q4-4 8 0m-6 3q2-2 4 0" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="38" y="3" width="14" height="10" rx="2" fill="none" stroke="currentColor"/><path d="M54 6v4" stroke="currentColor"/><rect x="40" y="5" width="10" height="6" rx="1" fill="currentColor"/></svg></span></div>
+  <div class="device-screen" id="device-screen">
+  <main class="telegram-window" aria-label="Прототип Telegram">
+    <aside class="sidebar" aria-label="Чаты">
+      <header class="sidebar-titlebar">
+        <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+        <button class="chats-title" data-action="all-chats">Чаты <span class="premium-star">★</span></button>
+        <div class="title-actions"><button class="icon-button blue" data-action="proxy" aria-label="Настройки прокси" data-icon="shield"></button><button class="icon-button blue" data-action="compose" aria-label="Новое сообщение" data-icon="compose"></button></div>
+      </header>
+      <div class="stories" id="stories" aria-label="Истории"></div>
+      <div class="search-wrap"><span data-icon="search"></span><input id="chat-search" type="search" placeholder="Поиск (⌘K)" aria-label="Поиск чатов" autocomplete="off"><button class="search-clear" id="clear-search" aria-label="Очистить поиск" hidden>×</button></div>
+      <div class="folders" role="tablist" aria-label="Чаты и задачи"><button role="tab" data-folder="all" aria-selected="true" aria-controls="chat-list">Все чаты</button><button role="tab" data-folder="new" aria-selected="false" aria-controls="chat-list">Новые</button><button role="tab" data-folder="tasks" aria-selected="false" aria-controls="task-list">Задачи <span class="folder-count" id="task-count">0</span></button></div>
+      <div class="task-filters" id="task-filters" aria-label="Статус задач" hidden><button data-task-filter="open" aria-pressed="true">В работе</button><button data-task-filter="completed" aria-pressed="false">Завершены</button><button data-task-filter="all" aria-pressed="false">Все</button></div>
+      <div class="chats-scroll"><div id="chat-list" class="chat-list" aria-label="Список чатов"></div><div id="task-list" class="task-list" aria-label="Задачи из чатов" hidden></div><p id="empty-list" class="empty-list" hidden>Чаты не найдены</p></div>
+      <nav class="bottom-navigation" aria-label="Навигация Telegram"><button class="icon-button" data-action="contacts" aria-label="Контакты" data-icon="person"></button><button class="icon-button active" data-action="all-chats" aria-label="Чаты" data-icon="chats"></button><button class="icon-button" data-action="settings" aria-label="Настройки" data-icon="settings"></button></nav>
+    </aside>
+    <section class="conversation" id="conversation" aria-label="Открытый чат">
+      <header class="conversation-header">
+        <button class="icon-button mobile-back" data-action="back" aria-label="Назад к чатам" data-icon="back"></button>
+        <button id="profile-button" class="profile-button" aria-label="Открыть профиль собеседника"><span id="header-avatar"></span><span class="header-text"><strong id="chat-title"></strong><span id="chat-status"></span></span></button>
+        <div class="conversation-actions"><button class="icon-button" data-action="call" aria-label="Позвонить" data-icon="phone"></button><button class="icon-button" data-action="search-messages" aria-label="Поиск в чате" data-icon="search"></button><button class="icon-button" id="more-button" data-action="more" aria-label="Меню чата" aria-haspopup="menu" aria-expanded="false" data-icon="more"></button></div>
+      </header>
+      <form id="message-search-form" class="message-search" hidden><span data-icon="search"></span><input id="message-search" type="search" placeholder="Поиск в этом чате" aria-label="Поиск в этом чате"><span id="search-count"></span><button type="button" class="icon-button" data-action="close-search" aria-label="Закрыть поиск">×</button></form>
+      <div class="messages" id="messages" role="log" aria-label="Сообщения" aria-live="polite"></div>
+      <div id="reply-bar" class="reply-bar" hidden><span data-icon="reply"></span><div><strong>Ответ</strong><span id="reply-text"></span></div><button class="icon-button" data-action="cancel-reply" aria-label="Отменить ответ">×</button></div>
+      <form class="composer" id="composer"><button type="button" class="round-button" data-action="attach" aria-label="Прикрепить файл" data-icon="clip"></button><div class="composer-input"><textarea id="message-input" rows="1" aria-label="Сообщение" placeholder="Сообщение..."></textarea><button type="button" class="icon-button emoji-button" data-action="emoji" aria-label="Выбрать эмодзи" data-icon="smile"></button></div><button type="submit" id="send-button" class="round-button" aria-label="Голосовое сообщение" data-icon="mic"></button></form>
+      <div id="popover" class="popover" hidden></div>
+    </section>
+    <section id="task-panel" class="task-panel" aria-label="Карточка задачи" hidden>
+      <header class="task-panel-header"><button class="task-back-button" data-action="back" aria-label="Назад к списку задач"><span class="icon-button mobile-back" data-icon="back" aria-hidden="true"></span><span class="task-panel-caption">Задача из чата</span></button><button class="task-source-link" id="open-task-chat">Открыть чат <span data-icon="chevron"></span></button></header>
+      <div class="task-detail-scroll" id="task-detail"></div>
+    </section>
+  </main>
+  </div><div class="phone-home-indicator" aria-hidden="true"></div></div></div></div>
+  <div class="context-menu" id="context-menu" role="menu" aria-label="Действия" hidden></div>
+  <dialog id="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><h2 id="dialog-title"></h2><button class="icon-button" id="close-dialog" aria-label="Закрыть">×</button></div><div id="dialog-content"></div></dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <div class="tour-overlay" id="feature-tour" hidden>
+    <div class="tour-spotlight" id="tour-spotlight" aria-hidden="true"></div>
+    <svg class="tour-arrow" id="tour-arrow" aria-hidden="true" hidden><defs><marker id="tour-arrow-head" viewBox="0 0 8 8" markerWidth="6" markerHeight="6" refX="8" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z"/></marker></defs><path id="tour-arrow-path" marker-end="url(#tour-arrow-head)"/></svg>
+    <section id="tour-card" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-description" tabindex="-1">
+      <button type="button" class="tour-close" id="tour-close" aria-label="Закрыть обзор">×</button>
+      <div class="tour-step-meta"><span class="tour-eyebrow">Задачи</span><span id="tour-step" aria-live="polite"></span></div>
+      <h2 class="tour-title" id="tour-title"></h2><p class="tour-description" id="tour-description"></p>
+      <div class="tour-progress" id="tour-progress" aria-hidden="true"></div>
+      <div class="tour-actions"><button type="button" id="tour-back" hidden>Назад</button><button type="button" id="tour-next">Далее</button></div>
+    </section>
+  </div>
+</body>
+</html>
